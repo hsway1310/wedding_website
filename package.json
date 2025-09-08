@@ -1,0 +1,15 @@
+{
+  "name": "haaris-lydia-wedding-website",
+  "version": "1.0.0",
+  "description": "A wedding e-invite website for Haaris and Lydia.",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
