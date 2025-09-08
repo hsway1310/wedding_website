@@ -9,9 +9,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeVideoBtn = document.getElementById('close-video-btn');
     const fullVideoPlayer = document.getElementById('full-video-player');
 
+    // Countdown elements and date
+    const countdownEl = document.getElementById('countdown');
+    const weddingDate = new Date('June 10, 2027 00:00:00').getTime();
+
     // Simple client-side storage for submitted names
     // Note: For a real application, this check must be done on the server.
     const submittedNames = new Set();
+
+    // Countdown function
+    const updateCountdown = () => {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        if (distance < 0) {
+            clearInterval(countdownInterval);
+            countdownEl.textContent = "We're married!";
+        }
+    };
+
+    // Update the countdown every 1 second
+    const countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown(); // Call once immediately to avoid a 1-second delay
     
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
