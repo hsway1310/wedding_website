@@ -9,13 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeVideoBtn = document.getElementById('close-video-btn');
     const fullVideoPlayer = document.getElementById('full-video-player');
 
-    // Countdown elements and date
-    const countdownEl = document.getElementById('countdown');
-    const weddingDate = new Date('June 10, 2027 00:00:00').getTime();
-
     // Simple client-side storage for submitted names
     // Note: For a real application, this check must be done on the server.
     const submittedNames = new Set();
+
+    // Countdown elements and date
+    const countdownEl = document.getElementById('countdown');
+    const weddingDate = new Date('June 10, 2027 00:00:00').getTime();
 
     // Countdown function
     const updateCountdown = () => {
@@ -27,7 +27,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        // countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        countdownEl.innerHTML = `
+                <div class="flip-segment">
+                    <span class="flip-label text-gray-900">Days</span>
+                    <span class="flip-value">${String(days).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label text-gray-900">Hours</span>
+                    <span class="flip-value">${String(hours).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label text-gray-900">Minutes</span>
+                    <span class="flip-value">${String(minutes).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label text-gray-900">Seconds</span>
+                    <span class="flip-value">${String(seconds).padStart(2, '0')}</span>
+                </div>
+            `;
 
         if (distance < 0) {
             clearInterval(countdownInterval);
@@ -38,14 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update the countdown every 1 second
     const countdownInterval = setInterval(updateCountdown, 1000);
     updateCountdown(); // Call once immediately to avoid a 1-second delay
-    
+
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            
+
             const targetId = link.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 window.scrollTo({
                     top: targetElement.offsetTop - 80, // Offset for fixed navigation bar
@@ -91,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         showMessage("Submitting your RSVP...", 'bg-gray-200 text-gray-800');
-        
+
         try {
             // This URL is a placeholder. You need to create a server-side endpoint.
             const backendUrl = 'https://your-api-gateway-url/submit-rsvp';
@@ -130,4 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
         messageBox.className = `${className} mb-4 p-4 text-center rounded-lg`;
         messageBox.style.display = 'block';
     }
+
+    // Start countdown timer
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
 });
