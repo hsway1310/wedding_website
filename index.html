@@ -94,9 +94,16 @@
         </section>
 
         <!-- Journey Bar Section -->
-        <div id="journey-bar" class="w-full flex justify-between items-center my-8 px-4 md:px-0"
-            style="min-height: 2.5rem;">
-            <!-- JS will populate this -->
+        <div id="journey-bar" class="group w-full flex justify-between items-center relative my-4 px-4"
+            style="min-height: 0rem;">
+            <div id="countdown-tooltip"
+                class="absolute -top-10 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            </div>
+            <span class="text-3xl z-20">🏠</span>
+            <span id="plane-emoji"
+                class="text-3xl transition-transform duration-1000 z-20 absolute -translate-y-1/2">✈️</span>
+            <p id="flight-path" class="absolute left-10 right-10 h-1 z-10 top-1/2 -translate-y-1/2"></p>
+            <span class="text-3xl z-20">🇪🇸</span>
         </div>
 
         <!-- Order of Events Section -->
