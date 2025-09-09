@@ -16,18 +16,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // Countdown elements and date
     const countdownEl = document.getElementById('countdown');
     const weddingDate = new Date('June 10, 2027 00:00:00').getTime();
+    const tooltipEl = document.getElementById('countdown-tooltip'); // Get the new tooltip element
+
+    // Function to update the tooltip text
+    const updateTooltip = () => {
+        const now = new Date().getTime();
+        const distanceInDays = Math.floor((weddingDate - now) / (1000 * 60 * 60 * 24));
+
+        if (distanceInDays > 365) {
+            tooltipEl.textContent = "Relax, we're still planning";
+        } else if (distanceInDays <= 365 && distanceInDays > 180) {
+            tooltipEl.textContent = "Less than a year now!";
+        } else if (distanceInDays <= 180 && distanceInDays > 90) {
+            tooltipEl.textContent = "Have you booked your flights?";
+        } else if (distanceInDays <= 90 && distanceInDays > 30) {
+            tooltipEl.textContent = "Getting close!";
+        } else if (distanceInDays <= 30 && distanceInDays > 0) {
+            tooltipEl.textContent = "Too late to back out now!";
+        } else {
+            tooltipEl.textContent = "We're married!";
+        }
+    };
+
+    // New plane journey elements and dates
+    const planeEmoji = document.getElementById('plane-emoji');
+    const today = new Date().getTime();
+    // const today = new Date('September 9, 2026 00:00:00');
+    const startDate = new Date('September 9, 2025 00:00:00').getTime(); //RSVP deadline
+    const totalJourney = weddingDate - startDate;
 
     // Countdown function
     const updateCountdown = () => {
-        const now = new Date().getTime();
-        const distance = weddingDate - now;
+        const today = new Date().getTime(); // Recalculate current time
+        const distance = weddingDate - today;
 
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
         countdownEl.innerHTML = `
                 <div class="flip-segment">
@@ -57,9 +83,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Update the countdown every 1 second
-    const countdownInterval = setInterval(updateCountdown, 1000);
-    updateCountdown(); // Call once immediately to avoid a 1-second delay
+    // New function to update the plane's position based on progress
+    const updatePlanePosition = () => {
+        if (!planeEmoji) return; // Exit if the element is not found
+        const today = new Date().getTime(); // Recalculate current time
+        const elapsedTime = today - startDate;
+        const progress = Math.min(Math.max(elapsedTime / totalJourney, 0), 1); // Clamp progress between 0 and 1
+        const maxDistance = 90; // The maximum percentage of the viewport width to move
+        const position = progress * maxDistance;
+        planeEmoji.style.transform = `translateX(${position}vw)`;
+    };
+
+
+    // Update the countdown and tooltip every second
+    const countdownInterval = setInterval(() => {
+        updateCountdown();
+        updatePlanePosition();
+        updateTooltip();
+    }, 1000);
+
+    // Initial call to avoid delay
+    updateCountdown();
+    updatePlanePosition();
+    updateTooltip();
+
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -153,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         messageBox.style.display = 'block';
     }
 
-    // Start countdown timer
+    // // Start countdown timer
     updateCountdown();
     setInterval(updateCountdown, 1000);
 });
