@@ -71,7 +71,7 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1rem; /* less gap */
+    gap: 2rem; /* less gap */
     flex-wrap: wrap;
 }
 
@@ -83,15 +83,15 @@ h3 {
 
 .flip-label {
     color: #374151;
-    font-size: 0.85rem;     /* smaller label */
+    font-size: 1rem;     /* smaller label */
     font-weight: 400;
     text-align: center;
 }
 
 .flip-value {
-    background: #f3f4f6;
-    color: #222;
-    font-size: 1.5rem;      /* smaller font */
+    background: #000611da;
+    color: #ffffff;
+    font-size: 2.5rem;      /* smaller font */
     font-family: 'Lato', sans-serif;
     font-weight: 700;
     min-width: 2.2rem;      /* smaller width */
@@ -104,9 +104,9 @@ h3 {
 
 .flip-colon {
     color: #222;
-    font-size: 1.5rem;      /* smaller colon */
+    font-size: 2rem;      /* smaller colon */
     font-weight: 700;
-    margin: 0 0.3rem;
+    margin: 0 0rem;
     align-self: center;
     margin-top: -0.4rem;
 }
