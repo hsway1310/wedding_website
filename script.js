@@ -47,15 +47,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Countdown function
     const updateCountdown = () => {
-        const today = new Date().getTime(); // Recalculate current time
+        const today = new Date().getTime(); 
+        const weddingDate = new Date('October 26, 2025 10:00:00').getTime(); // Example wedding date
         const distance = weddingDate - today;
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        // Calculate months first and get the remainder
+        const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const months = Math.floor(totalDays / 30.44);
+        const remainingDays = totalDays % 30.44;
+
+        // Use the remainder to calculate the next unit
+        const days = Math.floor(remainingDays); 
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         countdownEl.innerHTML = `
+                <div class="flip-segment">
+                    <span class="flip-label text-gray-900">Months</span>
+                    <span class="flip-value">${String(months).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon">:</span>
                 <div class="flip-segment">
                     <span class="flip-label text-gray-900">Days</span>
                     <span class="flip-value">${String(days).padStart(2, '0')}</span>
