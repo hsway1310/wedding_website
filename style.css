@@ -71,7 +71,8 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 2rem; /* less gap */
+    gap: 2rem;
+    /* less gap */
     flex-wrap: wrap;
 }
 
@@ -83,7 +84,8 @@ h3 {
 
 .flip-label {
     color: #374151;
-    font-size: 1rem;     /* smaller label */
+    font-size: 1rem;
+    /* smaller label */
     font-weight: 400;
     text-align: center;
 }
@@ -91,20 +93,24 @@ h3 {
 .flip-value {
     background: #000611da;
     color: #ffffff;
-    font-size: 2.5rem;      /* smaller font */
+    font-size: 2.5rem;
+    /* smaller font */
     font-family: 'Lato', sans-serif;
     font-weight: 700;
-    min-width: 2.2rem;      /* smaller width */
-    padding: 0.3rem 0.7rem; /* less padding */
+    min-width: 2.2rem;
+    /* smaller width */
+    padding: 0.3rem 0.7rem;
+    /* less padding */
     border-radius: 0.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     text-align: center;
     margin-bottom: 0.2rem;
 }
 
 .flip-colon {
     color: #222;
-    font-size: 2rem;      /* smaller colon */
+    font-size: 2rem;
+    /* smaller colon */
     font-weight: 700;
     margin: 0 0rem;
     align-self: center;
@@ -114,6 +120,10 @@ h3 {
 #save-the-date {
     background: #ffffff;
     border-radius: 2rem;
+}
+
+#flight-path {
+    background-color: #ffffff; /* A light gray background for a clean look */
 }
 
 @media (max-width: 600px) {
@@ -130,4 +140,31 @@ h3 {
     .flip-label {
         font-size: 1rem;
     }
+}
+
+/* Keyframes for the bounce animation */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(-25%);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+
+    50% {
+        transform: translateY(0);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+}
+
+/* Styles for the bouncing chevron */
+#scroll-prompt {
+    animation: bounce 1.5s infinite;
+}
+
+/* Hide the chevron when the body has the 'scrolled' class */
+body.scrolled #scroll-prompt {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
