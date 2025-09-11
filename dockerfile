@@ -25,9 +25,12 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/index.html ./
 COPY --from=builder /app/script.js ./
 COPY --from=builder /app/style.css ./
+COPY --from=builder /app/flight_path3.png ./
+COPY --from=builder /app/wedding_video.mp4 ./
+
 
 # Expose the port your application will listen on.
-# Cloud Run injects the PORT environment variable, which defaults to 8080
+# Cloud Run injects the PORT environment variable, which defaults to 8080.
 EXPOSE 8080
 
 # This is the command that will run when the container starts.
