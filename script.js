@@ -48,60 +48,78 @@ document.addEventListener('DOMContentLoaded', () => {
         fullVideoPlayer.currentTime = 0; // Reset video to the beginning
     });
 
-    // Handle RSVP form submission
-    rsvpForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // Live countdown timer
+    function updateCountdown() {
+        const countdownEl = document.getElementById('countdown');
+        const eventDate = new Date('2027-06-10T18:00:00');
+        const now = new Date();
 
-        // Get form data
-        const formData = new FormData(rsvpForm);
-        const name = formData.get('name').trim();
-        const guests = parseInt(formData.get('guests'), 10);
-        const attendance = formData.get('attendance');
-
-        // Client-side duplicate check
-        if (submittedNames.has(name.toLowerCase())) {
-            showMessage("You have already RSVP'd with this name. Please contact us if you need to update your details.", 'bg-red-200 text-red-800');
+        if (eventDate - now <= 0) {
+            countdownEl.innerHTML = "<span class='text-xl font-bold text-gray-900'>It's wedding time!</span>";
             return;
         }
 
-        showMessage("Submitting your RSVP...", 'bg-gray-200 text-gray-800');
-        
-        try {
-            // This URL is a placeholder. You need to create a server-side endpoint.
-            const backendUrl = 'https://your-api-gateway-url/submit-rsvp';
+        // Calculate months, days, hours, minutes, seconds
+        let years = eventDate.getFullYear() - now.getFullYear();
+        let months = eventDate.getMonth() - now.getMonth() + years * 12;
+        let days = eventDate.getDate() - now.getDate();
+        let hours = eventDate.getHours() - now.getHours();
+        let minutes = eventDate.getMinutes() - now.getMinutes();
+        let seconds = eventDate.getSeconds() - now.getSeconds();
 
-            const response = await fetch(backendUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: name,
-                    guests: guests,
-                    attendance: attendance
-                }),
-            });
-
-            if (!response.ok) {
-                // Handle server-side errors, including duplicate names
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'An error occurred.');
-            }
-
-            // On successful submission
-            submittedNames.add(name.toLowerCase());
-            rsvpForm.reset();
-            showMessage("Thank you for your RSVP!", 'bg-green-200 text-green-800');
-
-        } catch (error) {
-            console.error('Submission error:', error);
-            showMessage(`Error submitting RSVP: ${error.message}`, 'bg-red-200 text-red-800');
+        if (seconds < 0) {
+            seconds += 60;
+            minutes--;
         }
-    });
+        if (minutes < 0) {
+            minutes += 60;
+            hours--;
+        }
+        if (hours < 0) {
+            hours += 24;
+            days--;
+        }
+        if (days < 0) {
+            // Get days in previous month
+            const prevMonth = new Date(eventDate.getFullYear(), eventDate.getMonth(), 0);
+            days += prevMonth.getDate();
+            months--;
+        }
+        if (months < 0) {
+            months += 12;
+        }
 
-    function showMessage(message, className) {
-        messageBox.textContent = message;
-        messageBox.className = `${className} mb-4 p-4 text-center rounded-lg`;
-        messageBox.style.display = 'block';
+        countdownEl.innerHTML = `
+            <div class="flip-countdown flex flex-row justify-center items-center gap-4">
+                <div class="flip-segment">
+                    <span class="flip-label">Months</span>
+                    <span class="flip-value">${String(months).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label">Days</span>
+                    <span class="flip-value">${String(days).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label">Hours</span>
+                    <span class="flip-value">${String(hours).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label">Minutes</span>
+                    <span class="flip-value">${String(minutes).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label">Seconds</span>
+                    <span class="flip-value">${String(seconds).padStart(2, '0')}</span>
+                </div>
+            </div>
+        `;
     }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
 });
