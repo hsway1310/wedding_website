@@ -96,55 +96,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         countdownEl.innerHTML = `
-            <div class="flip-countdown flex flex-row justify-center items-center gap-4">
+            <div class="flip-countdown flex flex-nowrap justify-center items-center gap-1 sm:gap-2 md:gap-4">
                 <div class="flip-segment">
-                    <span class="flip-label">Months</span>
-                    <span class="flip-value">${String(months).padStart(2, '0')}</span>
+                    <span class="flip-label text-xs sm:text-sm">Months</span>
+                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(months).padStart(2, '0')}</span>
                 </div>
-                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <span class="flip-colon flex items-center text-xl sm:text-2xl font-bold mx-0 sm:mx-1 md:mx-2">:</span>
                 <div class="flip-segment">
-                    <span class="flip-label">Days</span>
-                    <span class="flip-value">${String(days).padStart(2, '0')}</span>
+                    <span class="flip-label text-xs sm:text-sm">Days</span>
+                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(days).padStart(2, '0')}</span>
                 </div>
-                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <span class="flip-colon flex items-center text-xl sm:text-2xl font-bold mx-0 sm:mx-1 md:mx-2">:</span>
                 <div class="flip-segment">
-                    <span class="flip-label">Hours</span>
-                    <span class="flip-value">${String(hours).padStart(2, '0')}</span>
+                    <span class="flip-label text-xs sm:text-sm">Hours</span>
+                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(hours).padStart(2, '0')}</span>
                 </div>
-                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <span class="flip-colon flex items-center text-xl sm:text-2xl font-bold mx-0 sm:mx-1 md:mx-2">:</span>
                 <div class="flip-segment">
-                    <span class="flip-label">Minutes</span>
-                    <span class="flip-value">${String(minutes).padStart(2, '0')}</span>
+                    <span class="flip-label text-xs sm:text-sm">Minutes</span>
+                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(minutes).padStart(2, '0')}</span>
                 </div>
-                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <span class="flip-colon flex items-center text-xl sm:text-2xl font-bold mx-0 sm:mx-1 md:mx-2">:</span>
                 <div class="flip-segment">
-                    <span class="flip-label">Seconds</span>
-                    <span class="flip-value">${String(seconds).padStart(2, '0')}</span>
+                    <span class="flip-label text-xs sm:text-sm">Seconds</span>
+                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(seconds).padStart(2, '0')}</span>
                 </div>
             </div>
         `;
     }
 
-    // // Scroll handler for the chevron visibility
-    // function handleScroll() {
-    //     const body = document.body;
-    //     if (window.scrollY > 50) {
-    //         body.classList.add('scrolled');
-    //     } else {
-    //         body.classList.remove('scrolled');
-    //     }
-    // }
-
-    // // Click handler to scroll to the next section
-    // scrollPrompt.addEventListener('click', () => {
-    //     const nextSection = document.getElementById('save-the-date');
-    //     if (nextSection) {
-    //         window.scrollTo({
-    //             top: nextSection.offsetTop - 10, // Offset for fixed navigation bar
-    //             behavior: 'smooth'
-    //         });
-    //     }
-    // });
 
     // New logic to handle the scroll prompt
     scrollPrompt.addEventListener('click', () => {
