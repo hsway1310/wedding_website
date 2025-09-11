@@ -30,7 +30,7 @@ WORKDIR /app
 COPY --from=builder /app/. /app/
 
 # Expose the port your application will listen on.
-# Cloud Run injects the PORT environment variable, which defaults to 8080.
+# Cloud Run injects the PORT environment variable, which defaults to 8080
 EXPOSE 8080
 
 # This is the command that will run when the container starts.
