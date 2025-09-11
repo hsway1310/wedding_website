@@ -28,6 +28,7 @@ COPY --from=builder /app/style.css ./
 COPY --from=builder /app/flight_path3.png ./
 COPY --from=builder /app/wedding_video.mp4 ./
 
+
 # Expose the port your application will listen on.
 # Cloud Run injects the PORT environment variable, which defaults to 8080.
 EXPOSE 8080
