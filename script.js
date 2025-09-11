@@ -13,113 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Note: For a real application, this check must be done on the server.
     const submittedNames = new Set();
 
-    // Countdown elements and date
-    const countdownEl = document.getElementById('countdown');
-    const weddingDate = new Date('June 10, 2027 00:00:00').getTime();
-    const tooltipEl = document.getElementById('countdown-tooltip'); // Get the new tooltip element
-
-    // Function to update the tooltip text
-    const updateTooltip = () => {
-        const now = new Date().getTime();
-        const distanceInDays = Math.floor((weddingDate - now) / (1000 * 60 * 60 * 24));
-
-        if (distanceInDays > 365) {
-            tooltipEl.textContent = "Relax, we're still planning";
-        } else if (distanceInDays <= 365 && distanceInDays > 180) {
-            tooltipEl.textContent = "Less than a year now!";
-        } else if (distanceInDays <= 180 && distanceInDays > 90) {
-            tooltipEl.textContent = "Have you booked your flights?";
-        } else if (distanceInDays <= 90 && distanceInDays > 30) {
-            tooltipEl.textContent = "Getting close!";
-        } else if (distanceInDays <= 30 && distanceInDays > 0) {
-            tooltipEl.textContent = "Too late to back out now!";
-        } else {
-            tooltipEl.textContent = "We're married!";
-        }
-    };
-
-    // New plane journey elements and dates
-    const planeEmoji = document.getElementById('plane-emoji');
-    const today = new Date().getTime();
-    // const today = new Date('September 9, 2026 00:00:00');
-    const startDate = new Date('September 9, 2025 00:00:00').getTime(); //RSVP deadline
-    const totalJourney = weddingDate - startDate;
-
-    // Countdown function
-    const updateCountdown = () => {
-        const today = new Date().getTime(); 
-        const weddingDate = new Date('October 26, 2025 10:00:00').getTime(); // Example wedding date
-        const distance = weddingDate - today;
-
-        // Calculate months first and get the remainder
-        const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const months = Math.floor(totalDays / 30.44);
-        const remainingDays = totalDays % 30.44;
-
-        // Use the remainder to calculate the next unit
-        const days = Math.floor(remainingDays); 
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        countdownEl.innerHTML = `
-                <div class="flip-segment">
-                    <span class="flip-label text-gray-900">Months</span>
-                    <span class="flip-value">${String(months).padStart(2, '0')}</span>
-                </div>
-                <span class="flip-colon">:</span>
-                <div class="flip-segment">
-                    <span class="flip-label text-gray-900">Days</span>
-                    <span class="flip-value">${String(days).padStart(2, '0')}</span>
-                </div>
-                <span class="flip-colon">:</span>
-                <div class="flip-segment">
-                    <span class="flip-label text-gray-900">Hours</span>
-                    <span class="flip-value">${String(hours).padStart(2, '0')}</span>
-                </div>
-                <span class="flip-colon">:</span>
-                <div class="flip-segment">
-                    <span class="flip-label text-gray-900">Minutes</span>
-                    <span class="flip-value">${String(minutes).padStart(2, '0')}</span>
-                </div>
-                <span class="flip-colon">:</span>
-                <div class="flip-segment">
-                    <span class="flip-label text-gray-900">Seconds</span>
-                    <span class="flip-value">${String(seconds).padStart(2, '0')}</span>
-                </div>
-            `;
-
-        if (distance < 0) {
-            clearInterval(countdownInterval);
-            countdownEl.textContent = "We're married!";
-        }
-    };
-
-    // New function to update the plane's position based on progress
-    const updatePlanePosition = () => {
-        if (!planeEmoji) return; // Exit if the element is not found
-        const today = new Date().getTime(); // Recalculate current time
-        const elapsedTime = today - startDate;
-        const progress = Math.min(Math.max(elapsedTime / totalJourney, 0), 1); // Clamp progress between 0 and 1
-        const maxDistance = 90; // The maximum percentage of the viewport width to move
-        const position = progress * maxDistance;
-        planeEmoji.style.transform = `translateX(${position}vw)`;
-    };
-
-
-    // Update the countdown and tooltip every second
-    const countdownInterval = setInterval(() => {
-        updateCountdown();
-        updatePlanePosition();
-        updateTooltip();
-    }, 1000);
-
-    // Initial call to avoid delay
-    updateCountdown();
-    updatePlanePosition();
-    updateTooltip();
-
-
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -155,64 +48,78 @@ document.addEventListener('DOMContentLoaded', () => {
         fullVideoPlayer.currentTime = 0; // Reset video to the beginning
     });
 
-    // Handle RSVP form submission
-    rsvpForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // Live countdown timer
+    function updateCountdown() {
+        const countdownEl = document.getElementById('countdown');
+        const eventDate = new Date('2027-06-10T18:00:00');
+        const now = new Date();
 
-        // Get form data
-        const formData = new FormData(rsvpForm);
-        const name = formData.get('name').trim();
-        const guests = parseInt(formData.get('guests'), 10);
-        const attendance = formData.get('attendance');
-
-        // Client-side duplicate check
-        if (submittedNames.has(name.toLowerCase())) {
-            showMessage("You have already RSVP'd with this name. Please contact us if you need to update your details.", 'bg-red-200 text-red-800');
+        if (eventDate - now <= 0) {
+            countdownEl.innerHTML = "<span class='text-xl font-bold text-gray-900'>It's wedding time!</span>";
             return;
         }
 
-        showMessage("Submitting your RSVP...", 'bg-gray-200 text-gray-800');
+        // Calculate months, days, hours, minutes, seconds
+        let years = eventDate.getFullYear() - now.getFullYear();
+        let months = eventDate.getMonth() - now.getMonth() + years * 12;
+        let days = eventDate.getDate() - now.getDate();
+        let hours = eventDate.getHours() - now.getHours();
+        let minutes = eventDate.getMinutes() - now.getMinutes();
+        let seconds = eventDate.getSeconds() - now.getSeconds();
 
-        try {
-            // This URL is a placeholder. You need to create a server-side endpoint.
-            const backendUrl = 'https://your-api-gateway-url/submit-rsvp';
-
-            const response = await fetch(backendUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: name,
-                    guests: guests,
-                    attendance: attendance
-                }),
-            });
-
-            if (!response.ok) {
-                // Handle server-side errors, including duplicate names
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'An error occurred.');
-            }
-
-            // On successful submission
-            submittedNames.add(name.toLowerCase());
-            rsvpForm.reset();
-            showMessage("Thank you for your RSVP!", 'bg-green-200 text-green-800');
-
-        } catch (error) {
-            console.error('Submission error:', error);
-            showMessage(`Error submitting RSVP: ${error.message}`, 'bg-red-200 text-red-800');
+        if (seconds < 0) {
+            seconds += 60;
+            minutes--;
         }
-    });
+        if (minutes < 0) {
+            minutes += 60;
+            hours--;
+        }
+        if (hours < 0) {
+            hours += 24;
+            days--;
+        }
+        if (days < 0) {
+            // Get days in previous month
+            const prevMonth = new Date(eventDate.getFullYear(), eventDate.getMonth(), 0);
+            days += prevMonth.getDate();
+            months--;
+        }
+        if (months < 0) {
+            months += 12;
+        }
 
-    function showMessage(message, className) {
-        messageBox.textContent = message;
-        messageBox.className = `${className} mb-4 p-4 text-center rounded-lg`;
-        messageBox.style.display = 'block';
+        countdownEl.innerHTML = `
+            <div class="flip-countdown flex flex-row justify-center items-center gap-4">
+                <div class="flip-segment">
+                    <span class="flip-label">Months</span>
+                    <span class="flip-value">${String(months).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label">Days</span>
+                    <span class="flip-value">${String(days).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label">Hours</span>
+                    <span class="flip-value">${String(hours).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label">Minutes</span>
+                    <span class="flip-value">${String(minutes).padStart(2, '0')}</span>
+                </div>
+                <span class="flip-colon flex items-center text-2xl font-bold mx-2">:</span>
+                <div class="flip-segment">
+                    <span class="flip-label">Seconds</span>
+                    <span class="flip-value">${String(seconds).padStart(2, '0')}</span>
+                </div>
+            </div>
+        `;
     }
 
-    // // Start countdown timer
     updateCountdown();
     setInterval(updateCountdown, 1000);
+
 });
