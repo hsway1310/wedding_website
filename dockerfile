@@ -26,7 +26,7 @@ COPY --from=builder /app/index.html ./
 COPY --from=builder /app/script.js ./
 COPY --from=builder /app/style.css ./
 COPY --from=builder /app/flight_path3.png ./
-COPY --from=builder /app/wedding_video.mp4 ./
+COPY --from=builder /app/wedding_video.* ./
 
 
 # Expose the port your application will listen on.
