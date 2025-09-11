@@ -2,10 +2,13 @@
 body {
     font-family: 'Lato', sans-serif;
     background-color: #fff;
-    color: #111827; /* gray-900 */
+    color: #111827;
+    /* gray-900 */
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-family: 'Playfair Display', serif;
 }
 
@@ -19,12 +22,14 @@ h1, h2, h3 {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #6b7280; /* gray-500 */
+    background: #6b7280;
+    /* gray-500 */
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #4b5563; /* gray-600 */
+    background: #4b5563;
+    /* gray-600 */
 }
 
 /* Hero video container styles */

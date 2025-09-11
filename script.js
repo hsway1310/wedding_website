@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Simple client-side storage for submitted names
     // Note: For a real application, this check must be done on the server.
     const submittedNames = new Set();
-    
+
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            
+
             const targetId = link.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 window.scrollTo({
                     top: targetElement.offsetTop - 80, // Offset for fixed navigation bar
