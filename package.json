@@ -4,7 +4,7 @@
   "description": "A wedding e-invite website for Haaris and Lydia.",
   "main": "index.js",
   "scripts": {
-    "start": "npx serve -s . -l $PORT"
+    "start": "npx serve -s . -l $8080"
   },
   "keywords": [],
   "author": "",
