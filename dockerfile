@@ -20,19 +20,13 @@ FROM node:20-alpine
 # Set the working directory
 WORKDIR /app
 
-# Copy the static file server and the website files from the 'builder' stage
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/index.html ./
-COPY --from=builder /app/script.js ./
-COPY --from=builder /app/style.css ./
-COPY --from=builder /app/flight_path3.png ./
-COPY --from=builder /app/wedding_video.* ./
-
+# Copy the static file server and all files from the 'builder' stage
+COPY --from=builder /app ./
 
 # Expose the port your application will listen on.
 # Cloud Run injects the PORT environment variable, which defaults to 8080.
 EXPOSE 8080
 
 # This is the command that will run when the container starts.
-# We use 'npx serve' to serve your static files.
+# We use 'npx serve' to serve your static files from the current directory.
 CMD ["npx", "serve", "-s", ".", "-l", "8080"]
