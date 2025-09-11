@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeVideoBtn = document.getElementById('close-video-btn');
     const fullVideoPlayer = document.getElementById('full-video-player');
 
+    // New scroll prompt elements
+    const scrollPrompt = document.getElementById('scroll-prompt');
+
+    // Get all sections to scroll through, including the footer
+    const sections = Array.from(document.querySelectorAll('main section, footer'));
+
     // Simple client-side storage for submitted names
     // Note: For a real application, this check must be done on the server.
     const submittedNames = new Set();
@@ -22,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (targetElement) {
                 window.scrollTo({
-                    top: targetElement.offsetTop - 80, // Offset for fixed navigation bar
+                    top: targetElement.offsetTop - 10, // Offset for fixed navigation bar
                     behavior: 'smooth'
                 });
             }
@@ -119,7 +125,83 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    // // Scroll handler for the chevron visibility
+    // function handleScroll() {
+    //     const body = document.body;
+    //     if (window.scrollY > 50) {
+    //         body.classList.add('scrolled');
+    //     } else {
+    //         body.classList.remove('scrolled');
+    //     }
+    // }
+
+    // // Click handler to scroll to the next section
+    // scrollPrompt.addEventListener('click', () => {
+    //     const nextSection = document.getElementById('save-the-date');
+    //     if (nextSection) {
+    //         window.scrollTo({
+    //             top: nextSection.offsetTop - 10, // Offset for fixed navigation bar
+    //             behavior: 'smooth'
+    //         });
+    //     }
+    // });
+
+    // New logic to handle the scroll prompt
+    scrollPrompt.addEventListener('click', () => {
+        let nextSection = null;
+        let currentSectionIndex = -1;
+
+        // Find the current section
+        const windowHeight = window.innerHeight;
+        const scrollPosition = window.scrollY;
+
+        for (let i = 0; i < sections.length; i++) {
+            const section = sections[i];
+            const rect = section.getBoundingClientRect();
+            // A section is considered "current" if its top is within the viewport
+            if (rect.top >= 0 && rect.top <= windowHeight) {
+                currentSectionIndex = i;
+                break;
+            }
+        }
+        
+        // If we found a current section and it's not the last one, get the next one
+        if (currentSectionIndex !== -1 && currentSectionIndex < sections.length - 1) {
+            nextSection = sections[currentSectionIndex + 1];
+        } else if (currentSectionIndex === -1 && sections.length > 0) {
+            // This handles the initial click on the hero section
+            nextSection = sections[0];
+        }
+
+        if (nextSection) {
+            const offset = 10; // Offset for fixed navigation bar
+            const targetPosition = nextSection.offsetTop - offset;
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+
+    // Update the scroll handler to hide the prompt at the bottom of the page
+    function handleScroll() {
+        const documentHeight = document.documentElement.scrollHeight;
+        const viewportHeight = window.innerHeight;
+        const scrollFromTop = window.scrollY;
+        const distanceFromBottom = documentHeight - (scrollFromTop + viewportHeight);
+        
+        // Hide the prompt when the user is near the bottom of the page
+        if (distanceFromBottom <= 100) {
+            scrollPrompt.style.opacity = '0';
+            scrollPrompt.style.visibility = 'hidden';
+        } else {
+            scrollPrompt.style.opacity = '1';
+            scrollPrompt.style.visibility = 'visible';
+        }
+    }
+
     updateCountdown();
     setInterval(updateCountdown, 1000);
-
+    window.addEventListener('scroll', handleScroll);
 });
