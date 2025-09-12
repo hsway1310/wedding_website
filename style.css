@@ -126,10 +126,6 @@ h3 {
     border-radius: 2rem;
 }
 
-#flight-path {
-    background-color: #ffffff; /* A light gray background for a clean look */
-}
-
 @media (max-width: 600px) {
     .flip-countdown {
         gap: 0.7rem;
