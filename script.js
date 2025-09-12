@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
-    const rsvpForm = document.getElementById('rsvp-form');
-    const messageBox = document.getElementById('message-box');
 
     // New video modal elements
     const watchVideoBtn = document.getElementById('watch-video-btn');
@@ -15,9 +13,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get all sections to scroll through, including the footer
     const sections = Array.from(document.querySelectorAll('main section, footer'));
 
-    // Simple client-side storage for submitted names
-    // Note: For a real application, this check must be done on the server.
-    const submittedNames = new Set();
+        // Center first section on page load for mobile devices
+    function centerFirstSection() {
+        const firstSection = document.getElementById('watch-video-btn');
+        if (firstSection && window.innerWidth <= 768) { // 768px is typical mobile breakpoint
+            const elementRect = firstSection.getBoundingClientRect();
+            const absoluteElementTop = elementRect.top + window.pageYOffset;
+            const middle = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+            
+            window.scrollTo({
+                top: middle,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // Run on page load
+    centerFirstSection();
+
+    // Also run when orientation changes
+    window.addEventListener('orientationchange', () => {
+        setTimeout(centerFirstSection, 100); // Small delay to allow rotation to complete
+    });
+
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -28,13 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (targetElement) {
                 window.scrollTo({
-                    top: targetElement.offsetTop - 10, // Offset for fixed navigation bar
+                    top: targetElement.offsetTop, // Offset for fixed navigation bar
                     behavior: 'smooth'
                 });
             }
         });
     });
-
+    
     // Event listener for the "Watch full save the date video" button
     watchVideoBtn.addEventListener('click', () => {
         videoModal.style.display = 'flex'; // Show the modal
@@ -96,30 +114,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         countdownEl.innerHTML = `
-            <div class="flip-countdown flex flex-nowrap justify-center items-center gap-1 sm:gap-2 md:gap-4">
+            <div class="flip-countdown flex flex-nowrap justify-center items-center gap-1 sm:gap-2 md:gap-3">
                 <div class="flip-segment">
-                    <span class="flip-label text-xs sm:text-sm">Months</span>
-                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(months).padStart(2, '0')}</span>
+                    <span class="flip-label text-[10px] sm:text-xs">Months</span>
+                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(months).padStart(2, '0')}</span>
                 </div>
-                <span class="flip-colon flex items-center text-xl sm:text-2xl font-bold mx-0 sm:mx-1 md:mx-2">:</span>
+                <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
                 <div class="flip-segment">
-                    <span class="flip-label text-xs sm:text-sm">Days</span>
-                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(days).padStart(2, '0')}</span>
+                    <span class="flip-label text-[10px] sm:text-xs">Days</span>
+                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(days).padStart(2, '0')}</span>
                 </div>
-                <span class="flip-colon flex items-center text-xl sm:text-2xl font-bold mx-0 sm:mx-1 md:mx-2">:</span>
+                <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
                 <div class="flip-segment">
-                    <span class="flip-label text-xs sm:text-sm">Hours</span>
-                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(hours).padStart(2, '0')}</span>
+                    <span class="flip-label text-[10px] sm:text-xs">Hours</span>
+                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(hours).padStart(2, '0')}</span>
                 </div>
-                <span class="flip-colon flex items-center text-xl sm:text-2xl font-bold mx-0 sm:mx-1 md:mx-2">:</span>
+                <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
                 <div class="flip-segment">
-                    <span class="flip-label text-xs sm:text-sm">Minutes</span>
-                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(minutes).padStart(2, '0')}</span>
+                    <span class="flip-label text-[10px] sm:text-xs">Minutes</span>
+                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(minutes).padStart(2, '0')}</span>
                 </div>
-                <span class="flip-colon flex items-center text-xl sm:text-2xl font-bold mx-0 sm:mx-1 md:mx-2">:</span>
+                <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
                 <div class="flip-segment">
-                    <span class="flip-label text-xs sm:text-sm">Seconds</span>
-                    <span class="flip-value text-xl sm:text-2xl md:text-3xl p-1 sm:p-2">${String(seconds).padStart(2, '0')}</span>
+                    <span class="flip-label text-[10px] sm:text-xs">Seconds</span>
+                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(seconds).padStart(2, '0')}</span>
                 </div>
             </div>
         `;
@@ -154,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (nextSection) {
-            const offset = 10; // Offset for fixed navigation bar
+            const offset = 50; // Offset for fixed navigation bar
             const targetPosition = nextSection.offsetTop - offset;
 
             window.scrollTo({
