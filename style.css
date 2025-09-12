@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700&display=swap');
+
 /* Custom CSS for your wedding website */
 body {
     font-family: 'Lato', sans-serif;
@@ -9,7 +11,7 @@ body {
 h1,
 h2,
 h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'savethedate', 'Playfair Display', serif;
 }
 
 html {
@@ -115,7 +117,7 @@ nav {
 
 #save-the-date {
     background: #fff;
-    background-image: url('casa_santoja4.png');
+    background-image: url('media/casa_santoja4.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -162,4 +164,11 @@ nav {
 /* Styles for the bouncing chevron */
 #scroll-prompt {
     animation: bounce 1.5s infinite;
+}
+
+@font-face {
+  font-family: 'savethedate';
+  src: url('fonts/Halimun.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
