@@ -7,20 +7,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeVideoBtn = document.getElementById('close-video-btn');
     const fullVideoPlayer = document.getElementById('full-video-player');
 
-    // New scroll prompt elements
+    // SCROLL PROMPT ELEMENTS
     const scrollPrompt = document.getElementById('scroll-prompt');
+    const footer = document.getElementById('the-footer'); // Get the footer element by its new ID
 
-    // Get all sections to scroll through, including the footer
-    const sections = Array.from(document.querySelectorAll('main section, footer'));
+    // Define the sections to cycle through
+    const sections = [
+        document.querySelector('header.hero-video-container'),
+        document.getElementById('save-the-date'),
+        document.getElementById('photo-collage'),
+        document.getElementById('the-footer'),
+    ];
+    
+    // Smooth scroll logic for the scroll prompt
+    if (scrollPrompt) {
+        scrollPrompt.addEventListener('click', function(event) {
+            event.preventDefault();
+            
+            let nextSection = null;
 
-        // Center first section on page load for mobile devices
+            // Determine which section is currently at the top of the viewport
+            for (let i = 0; i < sections.length; i++) {
+                const rect = sections[i].getBoundingClientRect();
+                // A section is considered current if its top is roughly at the top of the viewport
+                if (rect.top <= window.innerHeight * 0.5 && rect.bottom > 0) {
+                    // If we found a current section and it's not the last one, get the next one
+                    if (i < sections.length - 1) {
+                        nextSection = sections[i + 1];
+                    }
+                    break; // Exit the loop once the current section is found
+                }
+            }
+            
+            // If no section is found as "current" (e.g., at the very top of the page), scroll to the first one
+            if (!nextSection) {
+                nextSection = sections[0];
+            }
+
+            if (nextSection) {
+                nextSection.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+
+    // Hide/Show scroll prompt based on scroll position, using the footer
+    if (scrollPrompt && footer) {
+        window.addEventListener('scroll', function() {
+            const rect = footer.getBoundingClientRect();
+            const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+            // Hide the prompt when the top of the footer is visible in the viewport
+            if (rect.top <= windowHeight) {
+                scrollPrompt.style.opacity = '0';
+                scrollPrompt.style.pointerEvents = 'none'; // Makes the element unclickable
+            } else {
+                scrollPrompt.style.opacity = '1';
+                scrollPrompt.style.pointerEvents = 'auto'; // Makes the element clickable again
+            }
+        });
+    }
+
+    // ... (rest of your existing code below) ...
+
     function centerFirstSection() {
         const firstSection = document.getElementById('watch-video-btn');
-        if (firstSection && window.innerWidth <= 768) { // 768px is typical mobile breakpoint
+        if (firstSection && window.innerWidth <= 768) {
             const elementRect = firstSection.getBoundingClientRect();
             const absoluteElementTop = elementRect.top + window.pageYOffset;
             const middle = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
-            
             window.scrollTo({
                 top: middle,
                 behavior: 'smooth'
@@ -28,62 +84,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Run on page load
     centerFirstSection();
-
-    // Also run when orientation changes
     window.addEventListener('orientationchange', () => {
-        setTimeout(centerFirstSection, 100); // Small delay to allow rotation to complete
+        setTimeout(centerFirstSection, 100);
     });
-
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-
             const targetId = link.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
-
             if (targetElement) {
                 window.scrollTo({
-                    top: targetElement.offsetTop, // Offset for fixed navigation bar
+                    top: targetElement.offsetTop,
                     behavior: 'smooth'
                 });
             }
         });
     });
     
-    // Event listener for the "Watch full save the date video" button
-    watchVideoBtn.addEventListener('click', () => {
-        videoModal.style.display = 'flex'; // Show the modal
-        fullVideoPlayer.play(); // Play the video
-    });
+    if (watchVideoBtn && videoModal && closeVideoBtn && fullVideoPlayer) {
+        watchVideoBtn.addEventListener('click', () => {
+            videoModal.style.display = 'flex';
+            fullVideoPlayer.play();
+        });
+        closeVideoBtn.addEventListener('click', () => {
+            videoModal.style.display = 'none';
+            fullVideoPlayer.pause();
+            fullVideoPlayer.currentTime = 0;
+        });
+        fullVideoPlayer.addEventListener('ended', () => {
+            videoModal.style.display = 'none';
+            fullVideoPlayer.currentTime = 0;
+        });
+    }
 
-    // Event listener to close the video modal
-    closeVideoBtn.addEventListener('click', () => {
-        videoModal.style.display = 'none'; // Hide the modal
-        fullVideoPlayer.pause(); // Pause the video
-        fullVideoPlayer.currentTime = 0; // Reset video to the beginning
-    });
-
-    // Event listener for when the video ends
-    fullVideoPlayer.addEventListener('ended', () => {
-        videoModal.style.display = 'none'; // Hide the modal
-        fullVideoPlayer.currentTime = 0; // Reset video to the beginning
-    });
-
-    // Live countdown timer
     function updateCountdown() {
         const countdownEl = document.getElementById('countdown');
         const eventDate = new Date('2027-06-10T18:00:00');
         const now = new Date();
-
         if (eventDate - now <= 0) {
-            countdownEl.innerHTML = "<span class='text-xl font-bold text-gray-900'>It's wedding time!</span>";
+            if (countdownEl) {
+                countdownEl.innerHTML = "<span class='text-xl font-bold text-gray-900'>It's wedding time!</span>";
+            }
             return;
         }
 
-        // Calculate months, days, hours, minutes, seconds
         let years = eventDate.getFullYear() - now.getFullYear();
         let months = eventDate.getMonth() - now.getMonth() + years * 12;
         let days = eventDate.getDate() - now.getDate();
@@ -91,115 +137,48 @@ document.addEventListener('DOMContentLoaded', () => {
         let minutes = eventDate.getMinutes() - now.getMinutes();
         let seconds = eventDate.getSeconds() - now.getSeconds();
 
-        if (seconds < 0) {
-            seconds += 60;
-            minutes--;
-        }
-        if (minutes < 0) {
-            minutes += 60;
-            hours--;
-        }
-        if (hours < 0) {
-            hours += 24;
-            days--;
-        }
+        if (seconds < 0) { seconds += 60; minutes--; }
+        if (minutes < 0) { minutes += 60; hours--; }
+        if (hours < 0) { hours += 24; days--; }
         if (days < 0) {
-            // Get days in previous month
             const prevMonth = new Date(eventDate.getFullYear(), eventDate.getMonth(), 0);
             days += prevMonth.getDate();
             months--;
         }
-        if (months < 0) {
-            months += 12;
-        }
-
-        countdownEl.innerHTML = `
-            <div class="flip-countdown flex flex-nowrap justify-center items-center gap-1 sm:gap-2 md:gap-3">
-                <div class="flip-segment">
-                    <span class="flip-label text-[10px] sm:text-xs">Months</span>
-                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(months).padStart(2, '0')}</span>
-                </div>
-                <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
-                <div class="flip-segment">
-                    <span class="flip-label text-[10px] sm:text-xs">Days</span>
-                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(days).padStart(2, '0')}</span>
-                </div>
-                <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
-                <div class="flip-segment">
-                    <span class="flip-label text-[10px] sm:text-xs">Hours</span>
-                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(hours).padStart(2, '0')}</span>
-                </div>
-                <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
-                <div class="flip-segment">
-                    <span class="flip-label text-[10px] sm:text-xs">Minutes</span>
-                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(minutes).padStart(2, '0')}</span>
-                </div>
-                <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
-                <div class="flip-segment">
-                    <span class="flip-label text-[10px] sm:text-xs">Seconds</span>
-                    <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(seconds).padStart(2, '0')}</span>
-                </div>
-            </div>
-        `;
-    }
-
-
-    // New logic to handle the scroll prompt
-    scrollPrompt.addEventListener('click', () => {
-        let nextSection = null;
-        let currentSectionIndex = -1;
-
-        // Find the current section
-        const windowHeight = window.innerHeight;
-        const scrollPosition = window.scrollY;
-
-        for (let i = 0; i < sections.length; i++) {
-            const section = sections[i];
-            const rect = section.getBoundingClientRect();
-            // A section is considered "current" if its top is within the viewport
-            if (rect.top >= 0 && rect.top <= windowHeight) {
-                currentSectionIndex = i;
-                break;
-            }
-        }
+        if (months < 0) { months += 12; }
         
-        // If we found a current section and it's not the last one, get the next one
-        if (currentSectionIndex !== -1 && currentSectionIndex < sections.length - 1) {
-            nextSection = sections[currentSectionIndex + 1];
-        } else if (currentSectionIndex === -1 && sections.length > 0) {
-            // This handles the initial click on the hero section
-            nextSection = sections[0];
-        }
-
-        if (nextSection) {
-            const offset = 50; // Offset for fixed navigation bar
-            const targetPosition = nextSection.offsetTop - offset;
-
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        }
-    });
-
-    // Update the scroll handler to hide the prompt at the bottom of the page
-    function handleScroll() {
-        const documentHeight = document.documentElement.scrollHeight;
-        const viewportHeight = window.innerHeight;
-        const scrollFromTop = window.scrollY;
-        const distanceFromBottom = documentHeight - (scrollFromTop + viewportHeight);
-        
-        // Hide the prompt when the user is near the bottom of the page
-        if (distanceFromBottom <= 100) {
-            scrollPrompt.style.opacity = '0';
-            scrollPrompt.style.visibility = 'hidden';
-        } else {
-            scrollPrompt.style.opacity = '1';
-            scrollPrompt.style.visibility = 'visible';
+        if (countdownEl) {
+            countdownEl.innerHTML = `
+                <div class="flip-countdown flex flex-nowrap justify-center items-center gap-1 sm:gap-2 md:gap-3">
+                    <div class="flip-segment">
+                        <span class="flip-label text-[10px] sm:text-xs">Months</span>
+                        <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(months).padStart(2, '0')}</span>
+                    </div>
+                    <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
+                    <div class="flip-segment">
+                        <span class="flip-label text-[10px] sm:text-xs">Days</span>
+                        <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(days).padStart(2, '0')}</span>
+                    </div>
+                    <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
+                    <div class="flip-segment">
+                        <span class="flip-label text-[10px] sm:text-xs">Hours</span>
+                        <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(hours).padStart(2, '0')}</span>
+                    </div>
+                    <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
+                    <div class="flip-segment">
+                        <span class="flip-label text-[10px] sm:text-xs">Minutes</span>
+                        <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(minutes).padStart(2, '0')}</span>
+                    </div>
+                    <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
+                    <div class="flip-segment">
+                        <span class="flip-label text-[10px] sm:text-xs">Seconds</span>
+                        <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(seconds).padStart(2, '0')}</span>
+                    </div>
+                </div>
+            `;
         }
     }
 
     updateCountdown();
     setInterval(updateCountdown, 1000);
-    window.addEventListener('scroll', handleScroll);
 });
