@@ -118,7 +118,11 @@ h3 {
 }
 
 #save-the-date {
-    background: #ffffff;
+    background: #fff;
+    background-image: url('casa_santoja4.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 2rem;
 }
 
