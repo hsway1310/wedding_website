@@ -151,27 +151,27 @@ document.addEventListener('DOMContentLoaded', () => {
             countdownEl.innerHTML = `
                 <div class="flip-countdown flex flex-nowrap justify-center items-center gap-1 sm:gap-2 md:gap-3">
                     <div class="flip-segment">
-                        <span class="flip-label text-[10px] sm:text-xs">Months</span>
+                        <span class="flip-label text-[10px] sm:text-xs font-['Playfair']">Months</span>
                         <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(months).padStart(2, '0')}</span>
                     </div>
                     <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
                     <div class="flip-segment">
-                        <span class="flip-label text-[10px] sm:text-xs">Days</span>
+                        <span class="flip-label text-[10px] sm:text-xs font-['Playfair']">Days</span>
                         <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(days).padStart(2, '0')}</span>
                     </div>
                     <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
                     <div class="flip-segment">
-                        <span class="flip-label text-[10px] sm:text-xs">Hours</span>
+                        <span class="flip-label text-[10px] sm:text-xs font-['Playfair']">Hours</span>
                         <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(hours).padStart(2, '0')}</span>
                     </div>
                     <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
                     <div class="flip-segment">
-                        <span class="flip-label text-[10px] sm:text-xs">Minutes</span>
+                        <span class="flip-label text-[10px] sm:text-xs font-['Playfair']">Minutes</span>
                         <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(minutes).padStart(2, '0')}</span>
                     </div>
                     <span class="flip-colon flex items-center text-black text-lg sm:text-xl font-bold">:</span>
                     <div class="flip-segment">
-                        <span class="flip-label text-[10px] sm:text-xs">Seconds</span>
+                        <span class="flip-label text-[10px] sm:text-xs font-['Playfair']">Seconds</span>
                         <span class="flip-value bg-gray-900 text-white rounded-md text-lg sm:text-xl md:text-3xl p-1 sm:p-2">${String(seconds).padStart(2, '0')}</span>
                     </div>
                 </div>
