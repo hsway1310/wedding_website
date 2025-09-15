@@ -20,39 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('the-footer'),
     ];
     
-    // Smooth scroll logic for the scroll prompt
-    if (scrollPrompt) {
-        scrollPrompt.addEventListener('click', function(event) {
-            event.preventDefault();
-            
-            let nextSection = null;
-
-            // Determine which section is currently at the top of the viewport
-            for (let i = 0; i < sections.length; i++) {
-                const rect = sections[i].getBoundingClientRect();
-                // A section is considered current if its top is roughly at the top of the viewport
-                if (rect.top <= window.innerHeight * 0.5 && rect.bottom > 0) {
-                    // If we found a current section and it's not the last one, get the next one
-                    if (i < sections.length - 1) {
-                        nextSection = sections[i + 1];
-                    }
-                    break; // Exit the loop once the current section is found
-                }
-            }
-            
-            // If no section is found as "current" (e.g., at the very top of the page), scroll to the first one
-            if (!nextSection) {
-                nextSection = sections[0];
-            }
-
-            if (nextSection) {
-                nextSection.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
-    }
-
     // Hide/Show scroll prompt based on scroll position, using the footer
     if (scrollPrompt && footer) {
         window.addEventListener('scroll', function() {
@@ -147,24 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
-    // The old video logic below is now outdated and can be removed or replaced.
-    // The new code above handles everything.
-    // if (watchVideoBtn && videoModal && closeVideoBtn && fullVideoPlayer) {
-    //     watchVideoBtn.addEventListener('click', () => {
-    //         videoModal.style.display = 'flex';
-    //         fullVideoPlayer.play();
-    //     });
-    //     closeVideoBtn.addEventListener('click', () => {
-    //         videoModal.style.display = 'none';
-    //         fullVideoPlayer.pause();
-    //         fullVideoPlayer.currentTime = 0;
-    //     });
-    //     fullVideoPlayer.addEventListener('ended', () => {
-    //         videoModal.style.display = 'none';
-    //         fullVideoPlayer.currentTime = 0;
-    //     });
-    // }
 
     function updateCountdown() {
         const countdownEl = document.getElementById('countdown');
