@@ -1,16 +1,13 @@
+// script.js
 document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
-
-    // New video modal elements
     const under35Btn = document.getElementById('under-35-btn');
     const over35Btn = document.getElementById('over-35-btn');
     const videoModal = document.getElementById('video-modal');
     const closeVideoBtn = document.getElementById('close-video-btn');
     const fullVideoPlayer = document.getElementById('full-video-player');
-
-    // SCROLL PROMPT ELEMENTS
     const scrollPrompt = document.getElementById('scroll-prompt');
-    const footer = document.getElementById('the-footer'); // Get the footer element by its new ID
+    const footer = document.getElementById('the-footer');
 
     // Define the sections to cycle through
     const sections = [
@@ -19,25 +16,37 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('photo-collage'),
         document.getElementById('the-footer'),
     ];
-    
+
+    // Throttle function to limit event calls
+    const throttle = (func, limit) => {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    };
+
     // Hide/Show scroll prompt based on scroll position, using the footer
     if (scrollPrompt && footer) {
-        window.addEventListener('scroll', function() {
+        const handleScroll = () => {
             const rect = footer.getBoundingClientRect();
             const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-            // Hide the prompt when the top of the footer is visible in the viewport
             if (rect.top <= windowHeight) {
                 scrollPrompt.style.opacity = '0';
-                scrollPrompt.style.pointerEvents = 'none'; // Makes the element unclickable
+                scrollPrompt.style.pointerEvents = 'none';
             } else {
                 scrollPrompt.style.opacity = '1';
-                scrollPrompt.style.pointerEvents = 'auto'; // Makes the element clickable again
+                scrollPrompt.style.pointerEvents = 'auto';
             }
-        });
+        };
+        window.addEventListener('scroll', throttle(handleScroll, 100)); // Throttled scroll listener
     }
 
-    // --- NEW VIDEO MODAL LOGIC ---
     // Function to open the modal with a specific video source
     function openModal(videoSrc) {
         if (videoModal && fullVideoPlayer) {
@@ -59,32 +68,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Event listeners for the new buttons
+    // Event listeners for the new buttons, including touchstart for mobile
     if (under35Btn && over35Btn) {
-        under35Btn.addEventListener('click', () => {
-            const videoSrc = under35Btn.getAttribute('data-video');
-            openModal(videoSrc);
-        });
+        const under35VideoSrc = under35Btn.getAttribute('data-video');
+        const over35VideoSrc = over35Btn.getAttribute('data-video');
 
-        over35Btn.addEventListener('click', () => {
-            const videoSrc = over35Btn.getAttribute('data-video');
-            openModal(videoSrc);
-        });
+        const openUnder35 = () => openModal(under35VideoSrc);
+        const openOver35 = () => openModal(over35VideoSrc);
+
+        under35Btn.addEventListener('click', openUnder35);
+        under35Btn.addEventListener('touchstart', openUnder35);
+
+        over35Btn.addEventListener('click', openOver35);
+        over35Btn.addEventListener('touchstart', openOver35);
     }
 
-    // Event listener for the close button
+    // Event listener for the close button, including touchstart for mobile
     if (closeVideoBtn) {
-        closeVideoBtn.addEventListener('click', closeModal);
+        const closeVideo = () => closeModal();
+        closeVideoBtn.addEventListener('click', closeVideo);
+        closeVideoBtn.addEventListener('touchstart', closeVideo);
     }
-    
-    // Handle video ending to close the modal
+
     if (fullVideoPlayer) {
         fullVideoPlayer.addEventListener('ended', closeModal);
     }
-    // --- END NEW VIDEO MODAL LOGIC ---
 
     function centerFirstSection() {
-        const firstSection = document.getElementById('watch-video-btn');
+        const firstSection = document.querySelector('header.hero-video-container');
         if (firstSection && window.innerWidth <= 768) {
             const elementRect = firstSection.getBoundingClientRect();
             const absoluteElementTop = elementRect.top + window.pageYOffset;
@@ -142,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
             months--;
         }
         if (months < 0) { months += 12; }
-        
+
         if (countdownEl) {
             countdownEl.innerHTML = `
                 <div class="flip-countdown flex flex-nowrap justify-center items-center gap-1 sm:gap-2 md:gap-3">
