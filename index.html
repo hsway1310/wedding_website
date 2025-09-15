@@ -5,15 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haaris & Lydia</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Elegant Fonts from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lato:wght@300;400;700&display=swap"
         rel="stylesheet">
-    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -35,8 +32,7 @@
                     class="text-xl sm:text-2xl md:text-3xl font-light mb-8 drop-shadow-md font-['Playfair Display'] italic">
                     We're getting married...
                 </p>
-                <p
-                    class="text-xl sm:text-xl md:text-xl font-light mb-2 text-gray-200 drop-shadow-md font-['Playfair']">
+                <p class="text-xl sm:text-xl md:text-xl font-light mb-2 text-gray-200 drop-shadow-md font-['Playfair']">
                     Watch our Save the Date video:
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -57,7 +53,7 @@
         <div id="video-modal"
             class="fixed inset-0 z-[100] bg-black bg-opacity-95 hidden flex justify-center items-center">
             <div class="relative w-full h-full max-w-screen-xl max-h-screen-xl p-4 md:p-8">
-                <button id="close-video-btn"
+                <button id="close-video-btn" aria-label="Close video player"
                     class="absolute top-4 right-4 text-white text-3xl font-light hover:text-gray-300 transition-colors duration-200">
                     &times;
                 </button>
@@ -70,19 +66,19 @@
         </div>
     </section>
 
-    <!-- Scroll Down Prompt -->
-    <div id="scroll-prompt"
-        class="fixed left-0 right-0 bottom-6 z-40 flex flex-col items-center cursor-pointer transition-opacity duration-500">
-        <svg class="w-10 h-10 text-gray-400 mt-1 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path>
-        </svg>
-    </div>
+    <a href="#save-the-date">
+        <div id="scroll-prompt"
+            class="fixed left-0 right-0 bottom-6 z-40 flex flex-col items-center cursor-pointer transition-opacity duration-500">
+            <svg class="w-10 h-10 text-gray-400 mt-1 animate-bounce" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </div>
+    </a>
 
-    <!-- Main Content Sections -->
+
     <main class="container mx-auto px-4 my-16 sm:my-24">
 
-        <!-- Save the Date Section -->
         <section id="save-the-date"
             class="flex flex-col justify-center items-center py-20 md:min-h-screen mb-24 sm:mb-32">
             <div class="bg-white/90 p-6 sm:p-10 rounded-3xl shadow-xl w-11/12 max-w-2xl text-center backdrop-blur-sm">
@@ -94,17 +90,14 @@
                             class="font-bold">Location:</span> Dénia, España</h3>
                 </div>
                 <div id="countdown" class="mt-6 mb-2">
-                    <!-- Countdown will be injected here by script.js -->
                 </div>
             </div>
         </section>
 
-        <!-- Photo Collage Section -->
         <section id="photo-collage" class="flex justify-center items-center py-20 md:min-h-screen">
             <img src="media/photo_collage.png" alt="Photo Collage"
                 class="max-w-full max-h-screen object-contain mx-auto" />
         </section>
-
 
     </main>
 
