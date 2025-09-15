@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (videoModal && fullVideoPlayer) {
             fullVideoPlayer.pause();
             fullVideoPlayer.currentTime = 0;
+            fullVideoPlayer.removeAttribute('src');
             videoModal.classList.add('hidden');
             videoModal.classList.remove('flex');
         }
