@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
 
     // New video modal elements
-    const watchVideoBtn = document.getElementById('watch-video-btn');
+    const under35Btn = document.getElementById('under-35-btn');
+    const over35Btn = document.getElementById('over-35-btn');
     const videoModal = document.getElementById('video-modal');
     const closeVideoBtn = document.getElementById('close-video-btn');
     const fullVideoPlayer = document.getElementById('full-video-player');
@@ -69,7 +70,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ... (rest of your existing code below) ...
+    // --- NEW VIDEO MODAL LOGIC ---
+    // Function to open the modal with a specific video source
+    function openModal(videoSrc) {
+        if (videoModal && fullVideoPlayer) {
+            fullVideoPlayer.src = videoSrc;
+            fullVideoPlayer.load();
+            fullVideoPlayer.play();
+            videoModal.classList.remove('hidden');
+            videoModal.classList.add('flex');
+        }
+    }
+
+    // Function to close the modal and pause the video
+    function closeModal() {
+        if (videoModal && fullVideoPlayer) {
+            fullVideoPlayer.pause();
+            fullVideoPlayer.currentTime = 0;
+            videoModal.classList.add('hidden');
+            videoModal.classList.remove('flex');
+        }
+    }
+
+    // Event listeners for the new buttons
+    if (under35Btn && over35Btn) {
+        under35Btn.addEventListener('click', () => {
+            const videoSrc = under35Btn.getAttribute('data-video');
+            openModal(videoSrc);
+        });
+
+        over35Btn.addEventListener('click', () => {
+            const videoSrc = over35Btn.getAttribute('data-video');
+            openModal(videoSrc);
+        });
+    }
+
+    // Event listener for the close button
+    if (closeVideoBtn) {
+        closeVideoBtn.addEventListener('click', closeModal);
+    }
+    
+    // Handle video ending to close the modal
+    if (fullVideoPlayer) {
+        fullVideoPlayer.addEventListener('ended', closeModal);
+    }
+    // --- END NEW VIDEO MODAL LOGIC ---
 
     function centerFirstSection() {
         const firstSection = document.getElementById('watch-video-btn');
@@ -103,21 +148,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    if (watchVideoBtn && videoModal && closeVideoBtn && fullVideoPlayer) {
-        watchVideoBtn.addEventListener('click', () => {
-            videoModal.style.display = 'flex';
-            fullVideoPlayer.play();
-        });
-        closeVideoBtn.addEventListener('click', () => {
-            videoModal.style.display = 'none';
-            fullVideoPlayer.pause();
-            fullVideoPlayer.currentTime = 0;
-        });
-        fullVideoPlayer.addEventListener('ended', () => {
-            videoModal.style.display = 'none';
-            fullVideoPlayer.currentTime = 0;
-        });
-    }
+    // The old video logic below is now outdated and can be removed or replaced.
+    // The new code above handles everything.
+    // if (watchVideoBtn && videoModal && closeVideoBtn && fullVideoPlayer) {
+    //     watchVideoBtn.addEventListener('click', () => {
+    //         videoModal.style.display = 'flex';
+    //         fullVideoPlayer.play();
+    //     });
+    //     closeVideoBtn.addEventListener('click', () => {
+    //         videoModal.style.display = 'none';
+    //         fullVideoPlayer.pause();
+    //         fullVideoPlayer.currentTime = 0;
+    //     });
+    //     fullVideoPlayer.addEventListener('ended', () => {
+    //         videoModal.style.display = 'none';
+    //         fullVideoPlayer.currentTime = 0;
+    //     });
+    // }
 
     function updateCountdown() {
         const countdownEl = document.getElementById('countdown');
