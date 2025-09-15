@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Throttle function to limit event calls
     const throttle = (func, limit) => {
         let inThrottle;
-        return function() {
+        return function () {
             const args = arguments;
             const context = this;
             if (!inThrottle) {
@@ -50,7 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to open the modal with a specific video source
     function openModal(videoSrc) {
         if (videoModal && fullVideoPlayer) {
-            fullVideoPlayer.src = videoSrc;
+            // Append a unique timestamp to the video URL to prevent caching issues
+            const cacheBuster = `?t=${new Date().getTime()}`;
+            const newVideoSrc = videoSrc + cacheBuster;
+
+            fullVideoPlayer.src = newVideoSrc;
             fullVideoPlayer.load();
             fullVideoPlayer.play();
             videoModal.classList.remove('hidden');
