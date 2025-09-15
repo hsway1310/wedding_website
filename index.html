@@ -28,13 +28,12 @@
         </ul>
     </nav>
 
-    <!-- Video Hero Section -->
+    Video Hero Section
     <section>
         <header class="hero-video-container">
-            <!-- Replace the video src below with your own video URL -->
             <video autoplay muted loop playsinline class="hero-video">
-                <!-- <source src="media/wedding_video.mp4" type="video/mp4"> -->
-                <source src="https://storage.googleapis.com/hslw-wedding-website/Save_The_Date_50Cent.mp4" type="video/mp4">
+                <source src="https://storage.googleapis.com/hslw-wedding-website/Save_The_Date_50Cent.mp4"
+                    type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <div class="hero-overlay text-white">
@@ -42,28 +41,39 @@
                     class="text-5xl sm:text-7xl md:text-8xl font-thin tracking-tight mb-4 drop-shadow-lg font-['Playfair_Display']">
                     <span class="block">Haaris & Lydia</span>
                 </h1>
-                <p class="text-xl sm:text-2xl md:text-3xl font-light mb-8 drop-shadow-md font-['Playfair Display'] italic">
+                <p
+                    class="text-xl sm:text-2xl md:text-3xl font-light mb-8 drop-shadow-md font-['Playfair Display'] italic">
                     We're getting married...
                 </p>
-                <!-- The new button to trigger the full video -->
-                <button id="watch-video-btn"
-                    class="py-3 px-8 bg-white text-gray-800 font-semibold rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 font-['Playfair']">
-                    Watch Save The Date Video
-                </button>
+                <p
+                    class="text-xl sm:text-xl md:text-xl font-light mb-2 text-gray-200 drop-shadow-md font-['Playfair']">
+                    Watch our Save the Date video:
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <button id="under-35-btn"
+                        data-video="https://storage.googleapis.com/hslw-wedding-website/Save_The_Date_50Cent.mp4"
+                        class="py-2 px-6 bg-white text-gray-800 font-semibold rounded-full shadow-lg hover:bg-gray-400 transition-colors duration-300 font-['Playfair']">
+                        For Under 35's
+                    </button>
+                    <button id="over-35-btn"
+                        data-video="https://storage.googleapis.com/hslw-wedding-website/Save_The_Date_FG_edit.mp4"
+                        class="py-2 px-6 bg-white text-gray-800 font-semibold rounded-full shadow-lg hover:bg-gray-400 transition-colors duration-300 font-['Playfair']">
+                        For Over 35's
+                    </button>
+                </div>
             </div>
         </header>
 
-        <!-- Video Modal (Hidden by default) -->
         <div id="video-modal"
             class="fixed inset-0 z-[100] bg-black bg-opacity-95 hidden flex justify-center items-center">
             <div class="relative w-full h-full max-w-screen-xl max-h-screen-xl p-4 md:p-8">
                 <button id="close-video-btn"
                     class="absolute top-4 right-4 text-white text-3xl font-light hover:text-gray-300 transition-colors duration-200">
-                    &times; <!-- 'X' symbol -->
+                    &times;
                 </button>
                 <video id="full-video-player" class="w-full h-full object-contain">
-                    <!-- <source src="media/wedding_video.mp4" type="video/mp4"> -->
-                    <source src="https://storage.googleapis.com/hslw-wedding-website/Save_The_Date_50Cent.mp4" type="video/mp4">
+                    <source src="https://storage.googleapis.com/hslw-wedding-website/Save_The_Date_50Cent.mp4"
+                        type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
@@ -103,7 +113,8 @@
 
         <!-- Photo Collage Section -->
         <section id="photo-collage" class="flex justify-center items-center py-20 md:min-h-screen">
-            <img src="media/photo_collage.png" alt="Photo Collage" class="max-w-full max-h-screen object-contain mx-auto" />
+            <img src="media/photo_collage.png" alt="Photo Collage"
+                class="max-w-full max-h-screen object-contain mx-auto" />
         </section>
 
 
