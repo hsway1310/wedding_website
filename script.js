@@ -1,5 +1,14 @@
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
+    
+    window.addEventListener('pageshow', (event) => {
+        // Check if the page is loaded from the cache (e.g., via the back button)
+        if (event.persisted) {
+            // Force a full page reload to reset the state
+            window.location.reload();
+        }
+    });
+
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
     const under35Btn = document.getElementById('under-35-btn');
     const over35Btn = document.getElementById('over-35-btn');
