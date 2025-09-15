@@ -1,6 +1,6 @@
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     window.addEventListener('pageshow', (event) => {
         // Check if the page is loaded from the cache (e.g., via the back button)
         if (event.persisted) {
